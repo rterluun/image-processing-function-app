@@ -94,8 +94,8 @@ class ImageProcessingFunctionRequest:
                 **kwargs,
             )
         except BlobStorageError as e:
-            self.logger.error(e)
-            raise ImageProcessingError(f"Failed to upload image to blob storage: {e}") from e
+            self.logger.error(f"Failed to upload image to blob storage: {e}")
+            raise ImageProcessingError("Failed to upload image to blob storage.") from e
 
     def insert_table_storage_record(
         self,
@@ -134,8 +134,8 @@ class ImageProcessingFunctionRequest:
                 **kwargs,
             )
         except TableStorageError as e:
-            self.logger.error(e)
-            raise ImageProcessingError(f"Failed to insert record to table storage: {e}") from e
+            self.logger.error(f"Failed to insert record to table storage: {e}")
+            raise ImageProcessingError("Failed to insert record to table storage.") from e
 
     def __get_metadata(self) -> Metadata:
         """Extracts metadata from the image.

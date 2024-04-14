@@ -71,7 +71,7 @@ def test_upload_to_blob_storage_error(
 
     with pytest.raises(
         ImageProcessingError,
-        match="Failed to upload image to blob storage: Something went wrong",
+        match="Failed to upload image to blob storage.",
     ):
         ImageProcessingFunctionRequest.from_http_request(req=test_request).upload_to_blob_storage(
             connection_string="connection_string",
@@ -122,7 +122,7 @@ def test_insert_table_storage_record_error(
 
     with pytest.raises(
         ImageProcessingError,
-        match="Failed to insert record to table storage: Something went wrong",
+        match="Failed to insert record to table storage.",
     ):
         ImageProcessingFunctionRequest.from_http_request(req=test_request).insert_table_storage_record(
             connection_string="connection_string",
