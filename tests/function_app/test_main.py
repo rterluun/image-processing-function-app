@@ -41,8 +41,8 @@ def test_main(
         blob_type="BlockBlob",
         metadata={
             "make": "Python",
-            "exif_ifd_pointer": 57,
-            "gps_ifd_pointer": 63,
+            "exif_ifd_pointer": "57",
+            "gps_ifd_pointer": "63",
         },
     )
 
@@ -56,8 +56,8 @@ def test_main(
             "RowKey": "RK",
             "BlobName": blob_file_name,
             "make": "Python",
-            "exif_ifd_pointer": 57,
-            "gps_ifd_pointer": 63,
+            "exif_ifd_pointer": "57",
+            "gps_ifd_pointer": "63",
         },
         mode=UpdateMode.MERGE,
     )

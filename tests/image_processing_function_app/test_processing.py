@@ -54,8 +54,8 @@ def test_upload_to_blob_storage(
         blob_type="BlockBlob",
         metadata={
             "make": "Python",
-            "exif_ifd_pointer": 57,
-            "gps_ifd_pointer": 63,
+            "exif_ifd_pointer": "57",
+            "gps_ifd_pointer": "63",
         },
     )
 
@@ -104,8 +104,8 @@ def test_insert_table_storage_record(
             "RowKey": "RK",
             "BlobName": "blob_file_name",
             "make": "Python",
-            "exif_ifd_pointer": 57,
-            "gps_ifd_pointer": 63,
+            "exif_ifd_pointer": "57",
+            "gps_ifd_pointer": "63",
         },
         mode=UpdateMode.MERGE,
     )

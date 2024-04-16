@@ -62,9 +62,9 @@ class ImageProcessingFunctionRequest:
     def metadata_dict(self):
         """Returns the metadata as a dictionary."""
         return {
-            "make": self.metadata.make,
-            "exif_ifd_pointer": self.metadata.exif_ifd_pointer,
-            "gps_ifd_pointer": self.metadata.gps_ifd_pointer,
+            "make": str(self.metadata.make),
+            "exif_ifd_pointer": str(self.metadata.exif_ifd_pointer),
+            "gps_ifd_pointer": str(self.metadata.gps_ifd_pointer),
         }
 
     def upload_to_blob_storage(
@@ -125,9 +125,9 @@ class ImageProcessingFunctionRequest:
                 connection_string=connection_string,
                 table_name=table_name,
                 entity={
-                    "PartitionKey": partition_key,
-                    "RowKey": row_key,
-                    "BlobName": blob_file_name,
+                    "PartitionKey": str(partition_key),
+                    "RowKey": str(row_key),
+                    "BlobName": str(blob_file_name),
                     **self.metadata_dict,
                 },
                 mode=mode,
