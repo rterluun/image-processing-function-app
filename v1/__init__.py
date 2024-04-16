@@ -22,7 +22,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     azure_table_connection_string = os_getenv("AZURE_TABLE_CONNECTION_STRING")
     azure_table_name = os_getenv("AZURE_TABLE_NAME")
     azure_table_partition_key = os_getenv("AZURE_TABLE_PARTITION_KEY")
-    azure_table_row_key = os_getenv("AZURE_TABLE_ROW_KEY")
 
     # Generate a unique blob name
     blob_name = uuid.uuid4()
@@ -48,7 +47,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             table_name=str(azure_table_name),
             blob_file_name=str(blob_file_name),
             partition_key=str(azure_table_partition_key),
-            row_key=str(azure_table_row_key),
+            row_key=str(blob_file_name),
         )
 
     except ImageProcessingError:

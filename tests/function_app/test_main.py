@@ -53,7 +53,7 @@ def test_main(
     mock_table_service_client.return_value.get_table_client.return_value.upsert_entity.assert_called_once_with(
         entity={
             "PartitionKey": "PK",
-            "RowKey": "RK",
+            "RowKey": blob_file_name,
             "BlobName": blob_file_name,
             "make": "Python",
             "exif_ifd_pointer": "57",
