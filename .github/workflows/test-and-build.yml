@@ -1,0 +1,31 @@
+name: Tests
+on:
+  push:
+    branches-ignore:
+      - master
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+    - name: Install poetry
+      uses: abatilo/actions-poetry@v2
+      with:
+        poetry-version: '1.7.1'
+    - name: Install the project dependencies
+      run: poetry install
+    - name: Run pre-commit
+      run: |
+        poetry run pre-commit run --all-files
+    - name: Run tests with pytest
+      run: |
+        poetry run coverage run --source=github,src -m pytest tests
+    - name: Coverage report
+      run: |
+        poetry run coverage report -m
