@@ -48,7 +48,6 @@ def set_env_vars():
     os_environ["AZURE_TABLE_CONNECTION_STRING"] = "table_connection_string"
     os_environ["AZURE_TABLE_NAME"] = "table_name"
     os_environ["AZURE_TABLE_PARTITION_KEY"] = "PK"
-    os_environ["AZURE_TABLE_ROW_KEY"] = "RK"
 
     yield
 
@@ -57,4 +56,3 @@ def set_env_vars():
     os_environ.pop("AZURE_TABLE_CONNECTION_STRING", None)
     os_environ.pop("AZURE_TABLE_NAME", None)
     os_environ.pop("AZURE_TABLE_PARTITION_KEY", None)
-    os_environ.pop("AZURE_TABLE_ROW_KEY", None)
