@@ -37,8 +37,8 @@ def get_metadata(binary_image: bytes) -> Metadata:
         metadata_from_image = Image(binary_image)
         return Metadata(
             make=metadata_from_image.make,
-            exif_ifd_pointer=metadata_from_image.get("_exif_ifd_pointer"),
-            gps_ifd_pointer=metadata_from_image.get("_gps_ifd_pointer"),
+            exif_ifd_pointer=str(metadata_from_image.get("_exif_ifd_pointer")),
+            gps_ifd_pointer=str(metadata_from_image.get("_gps_ifd_pointer")),
         )
     except Exception as e:
         raise MetadataError(f"Failed to extract metadata from image: {e}") from e
