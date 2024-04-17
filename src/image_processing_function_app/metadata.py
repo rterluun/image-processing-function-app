@@ -36,7 +36,7 @@ def get_metadata(binary_image: bytes) -> Metadata:
     try:
         metadata_from_image = Image(binary_image)
         return Metadata(
-            make=metadata_from_image.make,
+            make=str(metadata_from_image.make),
             exif_ifd_pointer=str(metadata_from_image.get("_exif_ifd_pointer")),
             gps_ifd_pointer=str(metadata_from_image.get("_gps_ifd_pointer")),
         )
