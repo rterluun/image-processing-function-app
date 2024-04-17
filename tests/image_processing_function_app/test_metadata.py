@@ -8,8 +8,8 @@ def test_get_metadata(test_image: bytes):
     """Test get_metadata function."""
     assert get_metadata(binary_image=test_image) == Metadata(
         make="Python",
-        exif_ifd_pointer=57,
-        gps_ifd_pointer=63,
+        exif_ifd_pointer="57",
+        gps_ifd_pointer="63",
     )
 
 

@@ -1,10 +1,9 @@
-from typing import Any
+from typing import Any, Optional
 
 from azure.data.tables import TableServiceClient, UpdateMode
 from azure.storage.blob import BlobServiceClient
 
-from image_processing_function_app.exceptions import (BlobStorageError,
-                                                      TableStorageError)
+from image_processing_function_app.exceptions import BlobStorageError, TableStorageError
 
 
 def upload_to_blob_storage(
@@ -12,7 +11,7 @@ def upload_to_blob_storage(
     container_name: str,
     blob_file_name: str,
     data: bytes,
-    metadata: dict = None,
+    metadata: Optional[dict[Any, Any]] = None,
     **kwargs: Any,
 ):
     """Uploads data to Azure Blob Storage.

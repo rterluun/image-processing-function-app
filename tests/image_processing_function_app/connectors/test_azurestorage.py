@@ -5,9 +5,10 @@ from azure.data.tables import TableServiceClient, UpdateMode
 from azure.storage.blob import BlobServiceClient
 
 from image_processing_function_app.connectors.azurestorage import (
-    insert_table_storage_record, upload_to_blob_storage)
-from image_processing_function_app.exceptions import (BlobStorageError,
-                                                      TableStorageError)
+    insert_table_storage_record,
+    upload_to_blob_storage,
+)
+from image_processing_function_app.exceptions import BlobStorageError, TableStorageError
 
 
 @patch.object(BlobServiceClient, "from_connection_string", return_value=MagicMock())
