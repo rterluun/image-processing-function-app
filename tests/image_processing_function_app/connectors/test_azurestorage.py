@@ -66,7 +66,9 @@ def test_insert_table_storage_record(mock_table_service_client: MagicMock):
         mode=UpdateMode.MERGE,
     )
 
-    table_service_client.get_table_client.assert_called_once_with(table_name="table_name")
+    table_service_client.get_table_client.assert_called_once_with(
+        table_name="table_name"
+    )
 
     table_client.upsert_entity.assert_called_once_with(
         entity={"PartitionKey": "PK", "RowKey": "RK"},

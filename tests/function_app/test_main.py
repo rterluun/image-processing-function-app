@@ -27,7 +27,9 @@ def test_main(
     assert http_response.status_code == 200
 
     # Test HTTP response body is correct
-    assert http_response.get_body() == b"Image processing function completed successfully."
+    assert (
+        http_response.get_body() == b"Image processing function completed successfully."
+    )
 
     # Test container name is set correctly from environment variable
     mock_blob_service_client.return_value.get_blob_client.assert_called_once_with(
@@ -47,7 +49,9 @@ def test_main(
     )
 
     # Test table name is set correctly from environment variable
-    mock_table_service_client.return_value.get_table_client.assert_called_once_with(table_name="table_name")
+    mock_table_service_client.return_value.get_table_client.assert_called_once_with(
+        table_name="table_name"
+    )
 
     # Test entity is inserted into table storage with correct metadata
     mock_table_service_client.return_value.get_table_client.return_value.upsert_entity.assert_called_once_with(
@@ -97,7 +101,9 @@ def test_main_table_error(
     test_request: func.HttpRequest,
 ):
     """Test main function with table storage error."""
-    mock_insert_table_storage_record.side_effect = ImageProcessingError("An error occurred")
+    mock_insert_table_storage_record.side_effect = ImageProcessingError(
+        "An error occurred"
+    )
     http_response = main(req=test_request)
 
     # Test HTTP response status code is 500

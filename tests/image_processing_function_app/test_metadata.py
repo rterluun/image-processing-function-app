@@ -15,5 +15,7 @@ def test_get_metadata(test_image: bytes):
 
 def test_get_metadata_empty_image():
     """Test get_metadata function with empty image."""
-    with pytest.raises(MetadataError, match="Failed to extract metadata from image: 'APP1'"):
+    with pytest.raises(
+        MetadataError, match="Failed to extract metadata from image: 'APP1'"
+    ):
         get_metadata(binary_image=b"")
