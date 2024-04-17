@@ -7,7 +7,8 @@ from azure.storage.blob import BlobServiceClient
 
 from image_processing_function_app.exceptions import ImageProcessingError
 from image_processing_function_app.metadata import Metadata
-from image_processing_function_app.processing import ImageProcessingFunctionRequest
+from image_processing_function_app.processing import \
+    ImageProcessingFunctionRequest
 
 
 def test_from_http_request(test_request: func.HttpRequest):

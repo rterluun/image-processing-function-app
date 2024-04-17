@@ -5,7 +5,8 @@ from os import getenv as os_getenv
 import azure.functions as func
 
 from image_processing_function_app.exceptions import ImageProcessingError
-from image_processing_function_app.processing import ImageProcessingFunctionRequest
+from image_processing_function_app.processing import \
+    ImageProcessingFunctionRequest
 
 LOGGER = getLogger(__name__)
 

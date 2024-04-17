@@ -4,20 +4,13 @@ import azure.functions as func
 from azure.data.tables import UpdateMode
 
 from image_processing_function_app.connectors.azurestorage import (
-    insert_table_storage_record,
-    upload_to_blob_storage,
-)
-from image_processing_function_app.exceptions import (
-    BlobStorageError,
-    ImageProcessingError,
-    MetadataError,
-    TableStorageError,
-)
-from image_processing_function_app.metadata import (
-    METADATA_DEFAULT,
-    Metadata,
-    get_metadata,
-)
+    insert_table_storage_record, upload_to_blob_storage)
+from image_processing_function_app.exceptions import (BlobStorageError,
+                                                      ImageProcessingError,
+                                                      MetadataError,
+                                                      TableStorageError)
+from image_processing_function_app.metadata import (METADATA_DEFAULT, Metadata,
+                                                    get_metadata)
 
 LOGGER = getLogger(__name__)
 

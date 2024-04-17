@@ -3,7 +3,8 @@ from typing import Any
 from azure.data.tables import TableServiceClient, UpdateMode
 from azure.storage.blob import BlobServiceClient
 
-from image_processing_function_app.exceptions import BlobStorageError, TableStorageError
+from image_processing_function_app.exceptions import (BlobStorageError,
+                                                      TableStorageError)
 
 
 def upload_to_blob_storage(
