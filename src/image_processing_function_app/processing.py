@@ -13,7 +13,11 @@ from image_processing_function_app.exceptions import (
     MetadataError,
     TableStorageError,
 )
-from image_processing_function_app.metadata import METADATA_DEFAULT, Metadata, get_metadata
+from image_processing_function_app.metadata import (
+    METADATA_DEFAULT,
+    Metadata,
+    get_metadata,
+)
 
 LOGGER = getLogger(__name__)
 
@@ -125,9 +129,9 @@ class ImageProcessingFunctionRequest:
                 connection_string=connection_string,
                 table_name=table_name,
                 entity={
-                    "PartitionKey": partition_key,
-                    "RowKey": row_key,
-                    "BlobName": blob_file_name,
+                    "PartitionKey": str(partition_key),
+                    "RowKey": str(row_key),
+                    "BlobName": str(blob_file_name),
                     **self.metadata_dict,
                 },
                 mode=mode,
@@ -135,7 +139,9 @@ class ImageProcessingFunctionRequest:
             )
         except TableStorageError as e:
             self.logger.error(f"Failed to insert record to table storage: {e}")
-            raise ImageProcessingError("Failed to insert record to table storage.") from e
+            raise ImageProcessingError(
+                "Failed to insert record to table storage."
+            ) from e
 
     def __get_metadata(self) -> Metadata:
         """Extracts metadata from the image.

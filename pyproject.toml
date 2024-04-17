@@ -32,3 +32,6 @@ addopts = [
 pythonpath = [
   "v1", "src",
 ]
+
+[tool.isort]
+profile = "black"

@@ -22,7 +22,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     azure_table_connection_string = os_getenv("AZURE_TABLE_CONNECTION_STRING")
     azure_table_name = os_getenv("AZURE_TABLE_NAME")
     azure_table_partition_key = os_getenv("AZURE_TABLE_PARTITION_KEY")
-    azure_table_row_key = os_getenv("AZURE_TABLE_ROW_KEY")
 
     # Generate a unique blob name
     blob_name = uuid.uuid4()
@@ -37,18 +36,18 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     try:
         # Upload image to blob storage
         img_proc_func_request.upload_to_blob_storage(
-            connection_string=azure_storage_connection_string,
-            container_name=azure_storage_container_name,
-            blob_file_name=blob_file_name,
+            connection_string=str(azure_storage_connection_string),
+            container_name=str(azure_storage_container_name),
+            blob_file_name=str(blob_file_name),
         )
 
         # Insert record into table storage
         img_proc_func_request.insert_table_storage_record(
-            connection_string=azure_table_connection_string,
-            table_name=azure_table_name,
-            blob_file_name=blob_file_name,
-            partition_key=azure_table_partition_key,
-            row_key=azure_table_row_key,
+            connection_string=str(azure_table_connection_string),
+            table_name=str(azure_table_name),
+            blob_file_name=str(blob_file_name),
+            partition_key=str(azure_table_partition_key),
+            row_key=str(blob_file_name),
         )
 
     except ImageProcessingError:

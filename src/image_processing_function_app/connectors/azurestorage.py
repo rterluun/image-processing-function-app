@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 
 from azure.data.tables import TableServiceClient, UpdateMode
 from azure.storage.blob import BlobServiceClient
@@ -11,7 +11,7 @@ def upload_to_blob_storage(
     container_name: str,
     blob_file_name: str,
     data: bytes,
-    metadata: dict = None,
+    metadata: Optional[dict[Any, Any]] = None,
     **kwargs: Any,
 ):
     """Uploads data to Azure Blob Storage.
@@ -27,9 +27,15 @@ def upload_to_blob_storage(
         BlobStorageError: An error occurred while uploading the data to Azure Blob Storage.
     """
     try:
-        blob_service_client = BlobServiceClient.from_connection_string(conn_str=connection_string)
-        blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_file_name)
-        blob_client.upload_blob(data=data, blob_type="BlockBlob", metadata=metadata, **kwargs)
+        blob_service_client = BlobServiceClient.from_connection_string(
+            conn_str=connection_string
+        )
+        blob_client = blob_service_client.get_blob_client(
+            container=container_name, blob=blob_file_name
+        )
+        blob_client.upload_blob(
+            data=data, blob_type="BlockBlob", metadata=metadata, **kwargs
+        )
     except Exception as e:
         raise BlobStorageError(e) from e
 
@@ -53,7 +59,9 @@ def insert_table_storage_record(
         TableStorageError: An error occurred while inserting the record into Azure Table Storage.
     """
     try:
-        table_service_client = TableServiceClient.from_connection_string(conn_str=connection_string)
+        table_service_client = TableServiceClient.from_connection_string(
+            conn_str=connection_string
+        )
         table_client = table_service_client.get_table_client(table_name=table_name)
         table_client.upsert_entity(entity=entity, mode=mode, **kwargs)
     except Exception as e:
