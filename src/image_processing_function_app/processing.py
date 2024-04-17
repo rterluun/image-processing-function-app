@@ -13,11 +13,7 @@ from image_processing_function_app.exceptions import (
     MetadataError,
     TableStorageError,
 )
-from image_processing_function_app.metadata import (
-    METADATA_DEFAULT,
-    Metadata,
-    get_metadata,
-)
+from image_processing_function_app.metadata import METADATA_DEFAULT, Metadata, get_metadata
 
 LOGGER = getLogger(__name__)
 
@@ -67,8 +63,8 @@ class ImageProcessingFunctionRequest:
         """Returns the metadata as a dictionary."""
         return {
             "make": str(self.metadata.make),
-            "exif_ifd_pointer": str(self.metadata.exif_ifd_pointer),
-            "gps_ifd_pointer": str(self.metadata.gps_ifd_pointer),
+            "exif_ifd_pointer": self.metadata.exif_ifd_pointer,
+            "gps_ifd_pointer": self.metadata.gps_ifd_pointer,
         }
 
     def upload_to_blob_storage(
@@ -139,9 +135,7 @@ class ImageProcessingFunctionRequest:
             )
         except TableStorageError as e:
             self.logger.error(f"Failed to insert record to table storage: {e}")
-            raise ImageProcessingError(
-                "Failed to insert record to table storage."
-            ) from e
+            raise ImageProcessingError("Failed to insert record to table storage.") from e
 
     def __get_metadata(self) -> Metadata:
         """Extracts metadata from the image.
