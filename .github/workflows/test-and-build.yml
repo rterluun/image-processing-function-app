@@ -38,3 +38,10 @@ jobs:
       id: metadata
       with:
         images: ghcr.io/${{ github.repository }}
+    - uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: false
+        tags: ${{ steps.metadata.outputs.tags }}
+        labels: ${{ steps.metadata.outputs.labels }}
