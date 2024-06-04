@@ -29,3 +29,19 @@ jobs:
     - name: Coverage report
       run: |
         poetry run coverage report -m
+  build:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: docker/metadata-action@v5
+      id: metadata
+      with:
+        images: ghcr.io/${{ github.repository }}
+    - uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: false
+        tags: ${{ steps.metadata.outputs.tags }}
+        labels: ${{ steps.metadata.outputs.labels }}
