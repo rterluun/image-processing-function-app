@@ -15,6 +15,7 @@ exif = "^1.6.0"
 azure-storage-blob = "^12.19.1"
 azure-identity = "^1.16.0"
 azure-data-tables = "^12.5.0"
+werkzeug = "^3.0.3"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.0"

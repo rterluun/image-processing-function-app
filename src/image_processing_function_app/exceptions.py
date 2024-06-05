@@ -20,3 +20,9 @@ class TableStorageError(Exception):
     """Exception raised for errors in the table storage."""
 
     pass
+
+
+class MultiPartDataError(Exception):
+    """Exception raised for errors in the multipart data."""
+
+    pass

@@ -22,5 +22,8 @@ image-processing-function-app:dev
 The function app will be available at `http://localhost/api/v1`.
 You can test by uploading an image to the rest api endpoint.
 ```bash
-curl -T tests/resources/car.jpg http://localhost/api/v1
+curl -X POST "http://localhost/api/v1" \
+ -H "Content-Type: multipart/form-data" \
+ -F "file=@tests/resources/car.jpg" \
+ -F "metadata=@tests/resources/metadata.json;type=application/json"
 ```

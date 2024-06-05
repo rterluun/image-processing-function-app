@@ -11,12 +11,18 @@ from image_processing_function_app.exceptions import (
     BlobStorageError,
     ImageProcessingError,
     MetadataError,
+    MultiPartDataError,
     TableStorageError,
 )
 from image_processing_function_app.metadata import (
     METADATA_DEFAULT,
     Metadata,
     get_metadata,
+)
+from image_processing_function_app.multiparts import (
+    MULTIPARTDATA_DEFAULT,
+    MultiPartData,
+    get_multiparts,
 )
 
 LOGGER = getLogger(__name__)
@@ -37,12 +43,8 @@ class ImageProcessingFunctionRequest:
             logger (Logger): The logger.
         """
         self.logger = logger
-        self.method = req.method
-        self.url = req.url
-        self.headers = req.headers
-        self.params = req.params
-        self.route_params = req.route_params
-        self.body = req.get_body()
+        self.req = req
+        self.multipart: MultiPartData = self.__get_multiparts()
         self.metadata: Metadata = self.__get_metadata()
 
     @classmethod
@@ -93,7 +95,7 @@ class ImageProcessingFunctionRequest:
                 connection_string=connection_string,
                 container_name=container_name,
                 blob_file_name=blob_file_name,
-                data=self.body,
+                data=self.multipart.image,
                 metadata=self.metadata_dict,
                 **kwargs,
             )
@@ -150,7 +152,19 @@ class ImageProcessingFunctionRequest:
             Metadata: The metadata extracted from the image.
         """
         try:
-            return get_metadata(binary_image=self.body)
+            return get_metadata(binary_image=self.multipart.image)
         except MetadataError as e:
             self.logger.warning(e)
             return METADATA_DEFAULT
+
+    def __get_multiparts(self) -> MultiPartData:
+        """Extracts multipart data from the request.
+
+        Returns:
+            MultiPartData: The multipart data extracted from the request.
+        """
+        try:
+            return get_multiparts(req=self.req)
+        except MultiPartDataError as e:
+            self.logger.warning(e)
+            return MULTIPARTDATA_DEFAULT
