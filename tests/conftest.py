@@ -9,6 +9,7 @@ from image_processing_function_app.multiparts import MultiPartData
 with open("tests/resources/car.jpg", "rb") as f:
     TEST_IMAGE = f.read()
 
+# The test metadata is a JSON object with test metadata.
 with open("tests/resources/metadata.json", "rb") as f:
     TEST_METADATA = f.read()
 
