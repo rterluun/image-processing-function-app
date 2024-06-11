@@ -6,11 +6,16 @@ from azure.data.tables import TableServiceClient, UpdateMode
 from azure.storage.blob import BlobServiceClient
 
 from image_processing_function_app.exceptions import ImageProcessingError
-from image_processing_function_app.multiparts import MultiPartData
 from image_processing_function_app.processing import ImageProcessingFunctionRequest
+from tests.conftest import TEST_MULTIPARTDATA
 from v1 import main
 
 
+@patch.object(
+    ImageProcessingFunctionRequest,
+    "_ImageProcessingFunctionRequest__get_multiparts",
+    return_value=TEST_MULTIPARTDATA,
+)
 @patch.object(TableServiceClient, "from_connection_string", return_value=MagicMock())
 @patch.object(BlobServiceClient, "from_connection_string", return_value=MagicMock())
 @patch("uuid.uuid4", return_value=UUID(int=1))
@@ -22,63 +27,51 @@ def test_main(
     test_image: bytes,
 ):
     """Test main function."""
-    with patch.object(
-        ImageProcessingFunctionRequest,
-        "_ImageProcessingFunctionRequest__get_multiparts",
-        new_callable=MagicMock,
-    ) as mock_multipart:
+    blob_file_name = str(mock_uuid4.return_value) + ".jpg"
+    http_response = main(req=test_request)
 
-        mock_multipart.return_value = MultiPartData(
-            metadata=b"",
-            image=test_image,
-        )
+    # Test HTTP response status code is 200
+    assert http_response.status_code == 200
 
-        blob_file_name = str(mock_uuid4.return_value) + ".jpg"
-        http_response = main(req=test_request)
+    # Test HTTP response body is correct
+    assert (
+        http_response.get_body() == b"Image processing function completed successfully."
+    )
 
-        # Test HTTP response status code is 200
-        assert http_response.status_code == 200
+    # Test container name is set correctly from environment variable
+    mock_blob_service_client.return_value.get_blob_client.assert_called_once_with(
+        container="azure_storage_container_name",
+        blob=blob_file_name,
+    )
 
-        # Test HTTP response body is correct
-        assert (
-            http_response.get_body()
-            == b"Image processing function completed successfully."
-        )
+    # Test blob is uploaded with correct metadata
+    mock_blob_service_client.return_value.get_blob_client.return_value.upload_blob.assert_called_once_with(
+        data=test_image,
+        blob_type="BlockBlob",
+        metadata={
+            "make": "Python",
+            "exif_ifd_pointer": "57",
+            "gps_ifd_pointer": "63",
+        },
+    )
 
-        # Test container name is set correctly from environment variable
-        mock_blob_service_client.return_value.get_blob_client.assert_called_once_with(
-            container="azure_storage_container_name",
-            blob=blob_file_name,
-        )
+    # Test table name is set correctly from environment variable
+    mock_table_service_client.return_value.get_table_client.assert_called_once_with(
+        table_name="table_name"
+    )
 
-        # Test blob is uploaded with correct metadata
-        mock_blob_service_client.return_value.get_blob_client.return_value.upload_blob.assert_called_once_with(
-            data=test_image,
-            blob_type="BlockBlob",
-            metadata={
-                "make": "Python",
-                "exif_ifd_pointer": "57",
-                "gps_ifd_pointer": "63",
-            },
-        )
-
-        # Test table name is set correctly from environment variable
-        mock_table_service_client.return_value.get_table_client.assert_called_once_with(
-            table_name="table_name"
-        )
-
-        # Test entity is inserted into table storage with correct metadata
-        mock_table_service_client.return_value.get_table_client.return_value.upsert_entity.assert_called_once_with(
-            entity={
-                "PartitionKey": "PK",
-                "RowKey": blob_file_name,
-                "BlobName": blob_file_name,
-                "make": "Python",
-                "exif_ifd_pointer": "57",
-                "gps_ifd_pointer": "63",
-            },
-            mode=UpdateMode.MERGE,
-        )
+    # Test entity is inserted into table storage with correct metadata
+    mock_table_service_client.return_value.get_table_client.return_value.upsert_entity.assert_called_once_with(
+        entity={
+            "PartitionKey": "PK",
+            "RowKey": blob_file_name,
+            "BlobName": blob_file_name,
+            "make": "Python",
+            "exif_ifd_pointer": "57",
+            "gps_ifd_pointer": "63",
+        },
+        mode=UpdateMode.MERGE,
+    )
 
 
 @patch.object(TableServiceClient, "from_connection_string", return_value=MagicMock())

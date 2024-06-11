@@ -3,9 +3,20 @@ from os import environ as os_environ
 import azure.functions as func
 import pytest
 
+from image_processing_function_app.multiparts import MultiPartData
+
 # The test image is a JPEG image with EXIF metadata, stored as a byte array.
 with open("tests/resources/car.jpg", "rb") as f:
     TEST_IMAGE = f.read()
+
+with open("tests/resources/metadata.json", "rb") as f:
+    TEST_METADATA = f.read()
+
+# The test multipart data is a MultiPartData object with metadata and an image.
+TEST_MULTIPARTDATA = MultiPartData(
+    metadata=TEST_METADATA,
+    image=TEST_IMAGE,
+)
 
 
 @pytest.fixture
