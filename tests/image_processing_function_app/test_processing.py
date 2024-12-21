@@ -18,9 +18,7 @@ from tests.conftest import TEST_MULTIPARTDATA
 )
 def test_from_http_request(test_request: func.HttpRequest):
     """Test from_http_request method."""
-    assert ImageProcessingFunctionRequest.from_http_request(
-        req=test_request
-    ).metadata == Metadata(
+    assert ImageProcessingFunctionRequest.from_http_request(req=test_request).metadata == Metadata(
         make="Python",
         exif_ifd_pointer="57",
         gps_ifd_pointer="63",
@@ -29,9 +27,7 @@ def test_from_http_request(test_request: func.HttpRequest):
 
 def test_from_empty_http_request(empty_request: func.HttpRequest):
     """Test from_http_request method with empty request."""
-    assert ImageProcessingFunctionRequest.from_http_request(
-        req=empty_request
-    ).metadata == Metadata(
+    assert ImageProcessingFunctionRequest.from_http_request(req=empty_request).metadata == Metadata(
         make="Unknown",
         exif_ifd_pointer="Unknown",
         gps_ifd_pointer="Unknown",
@@ -53,9 +49,7 @@ def test_upload_to_blob_storage(
     blob_service_client = mock_blob_service_client.return_value
     blob_client = mock_blob_service_client.return_value.get_blob_client.return_value
 
-    ImageProcessingFunctionRequest.from_http_request(
-        req=test_request
-    ).upload_to_blob_storage(
+    ImageProcessingFunctionRequest.from_http_request(req=test_request).upload_to_blob_storage(
         connection_string="connection_string",
         container_name="container_name",
         blob_file_name="blob_file_name",
@@ -90,9 +84,7 @@ def test_upload_to_blob_storage_error(
         ImageProcessingError,
         match="Failed to upload image to blob storage.",
     ):
-        ImageProcessingFunctionRequest.from_http_request(
-            req=test_request
-        ).upload_to_blob_storage(
+        ImageProcessingFunctionRequest.from_http_request(req=test_request).upload_to_blob_storage(
             connection_string="connection_string",
             container_name="container_name",
             blob_file_name="blob_file_name",
@@ -113,9 +105,7 @@ def test_insert_table_storage_record(
     table_service_client = mock_table_service_client.return_value
     table_client = mock_table_service_client.return_value.get_table_client.return_value
 
-    ImageProcessingFunctionRequest.from_http_request(
-        req=test_request
-    ).insert_table_storage_record(
+    ImageProcessingFunctionRequest.from_http_request(req=test_request).insert_table_storage_record(
         connection_string="connection_string",
         table_name="table_name",
         blob_file_name="blob_file_name",
@@ -123,9 +113,7 @@ def test_insert_table_storage_record(
         row_key="RK",
     )
 
-    table_service_client.get_table_client.assert_called_once_with(
-        table_name="table_name"
-    )
+    table_service_client.get_table_client.assert_called_once_with(table_name="table_name")
     table_client.upsert_entity.assert_called_once_with(
         entity={
             "PartitionKey": "PK",
@@ -152,9 +140,7 @@ def test_insert_table_storage_record_error(
         ImageProcessingError,
         match="Failed to insert record to table storage.",
     ):
-        ImageProcessingFunctionRequest.from_http_request(
-            req=test_request
-        ).insert_table_storage_record(
+        ImageProcessingFunctionRequest.from_http_request(req=test_request).insert_table_storage_record(
             connection_string="connection_string",
             table_name="table_name",
             blob_file_name="blob_file_name",
